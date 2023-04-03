@@ -33,72 +33,67 @@ template<typename T, size_t size>void debug(const array<T, size> &a) {for (auto 
 template<typename T, typename V>void debug(const map<T, V>&v) {for (auto z : v)cout << "[" << z.first << "]=" << z.second << ","; cout << endl;}
 
 
-vector<int> parent;
-vector<int> arr;
-vector<int> size;
-vector<long long> sum;
+
+struct DSU {
+    vector<int> par, rnk, size;
+    multiset<int> ms;
+
+    int c;
+    DSU(int n) : par(n + 1), rnk(n + 1, 0), size(n + 1, 1), c(n) {
+        for (int i = 1; i <= n; ++i)
+            par[i] = i, ms.insert(1);
+    }
+    int find(int i)
+    {
+        if (par[i] == i)
+            return i;
+        return par[i] = find(par[i]);
+    }
+    bool same(int i, int j) {
+        return find(i) == find(j);
+    }
+    int get_size(int i) {
+        return size[find(i)];
+    }
+    int totalcc() {
+        return c;    //connected components
+    }
+    int merge(int i, int j) {
+        i = find(i), j = find(j);
+        if (i == j)
+            return -1;
+        else
+            --c;
+
+        if (size[i] > size[j]) swap(i, j);
+
+        par[i] = j;
+
+        int sizX = size[i], sizY = size[j];
+        //why does get size function don't work here when i write it above instead of size[]
+
+        auto it = ms.find(sizX);    ms.erase(it);
+        auto it2 = ms.find(sizY);   ms.erase(it2);
+
+        size[j] += size[i];
+        ms.insert(size[j]);
+
+        // if (rnk[i] == rnk[j]) rnk[j]++;
+
+        return j;
+    }
+};
 
 
-void make(int i)
+
+signed main()
 {
-	parent[i] = i;
-	size[i] = 1;
-	sum[i] = arr[i];
-}
-int find(int i)
-{
-	if (parent[i] == i)
-		return i;
-	return parent[i] = find(parent[i]);
-}
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    int n, d;
+    cin >> n >> d;
 
-void Union(int a, int b)
-{
-	int x = find(a);
-	int y = find(b);
+    DSU dsu(n);
 
-	if (x == y)
-		return;
-	if (size[x] > size[y])
-		swap(x, y);
-	parent[x] = y;
-	//int siz = size[y];
-	size[y] += size[x];
-	sum[y] += sum[x];
-	//size[x] += siz;
-}
-
-/**
- *  note here there can be 2 types of problems.
- * i) where the gives sets ranges from 1 to n and is in the order 1 2 3 4 5 .....
- *  need to change sum[i]=i;
- * ii) where the given sets contains arbitrary nos or if they contain 1 to n permutation.
- * 	so in this case you need extra arr[] vector and need to cin it.
- *
- *
- *
- *
- * **/
-
-int main()
-{
-	ios_base::sync_with_stdio(0);
-	cin.tie(0); cout.tie(0);
-	int n;
-	cin >> n;
-
-	parent.assign(n + 1, -1);
-	size.assign(n + 1, -1);
-	arr.assign(n + 1, -1);
-	sum.assign(n + 1, 0);
-
-	for (int i = 1; i <= n; i++)
-		cin >> arr[i];
-
-	for (int i = 1; i <= n; i++)
-		make(i);
-
-
-
-	return 0;
+    return 0;
 }
