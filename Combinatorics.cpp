@@ -1,32 +1,41 @@
 #include<bits/stdc++.h>
 using namespace std;
+bool Bipartite(int i, vector<int> adj[], vector<int> &col)
+{
+    queue<int> q;
+    q.push(i);
+    col[i] = 1; //red
 
-long long mod=1e9+7;
-long long binpow(long long a, long long b, long long m) {
-	a %= m;
-	long long res = 1;
-	while (b > 0) {
-		if (b & 1)
-			res = res * a % m;
-		a = a * a % m;
-		b >>= 1;
-	}
-	return res % m;
+    while (!q.empty())
+    {
+        int popped = q.front();
+        int color = col[popped];
+        q.pop();
+        for (auto it : adj[popped])
+        {
+            if (!col[it])
+            {
+                q.push(it);
+                col[it] = (color == 1 ? 2 : 1);
+            }
+            else if (color == col[it])
+                return false;
+        }
+    }
+
+    return true;
 }
 
-long long fact(long long n)
+bool isBipartite(int n, vector<int> adj[])
 {
-	if (n == 1 || n == 0)
-		return 1;
-	return n * fact(n - 1) % mod;
-}
+    vector<int> col(n + 1, 0);
 
-long long ncr(long long a, long long b)
-{
-	long long numer = fact(a);
-	long long deno = fact(b) * fact(a - b) % mod;
+    for (int i = 1; i <= n; i++) {
+        if (col[i] == 0) {
+            if (!Bipartite(i, adj, col))
+                return false;
+        }
+    }
 
-	long long ans = numer * binpow(deno, mod - 2, mod) % mod;
-
-	return ans;
+    return true;
 }
