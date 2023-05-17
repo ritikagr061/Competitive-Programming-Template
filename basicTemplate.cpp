@@ -67,6 +67,12 @@ long long fact(long long n)
 
 long long ncr(int a, int b)
 {
+	if (b == 0)
+		return 1;
+	if (a == 0)
+		return 0;
+	else if (a < b)
+		return 0;
 	int numer = fact(a);
 	int deno = fact(b) * fact(a - b) % mod;
 
