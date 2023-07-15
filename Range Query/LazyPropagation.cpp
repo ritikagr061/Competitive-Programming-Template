@@ -60,11 +60,11 @@ struct LazySegTree {
 		build(0, n - 1, 1);
 	}
 
-	//update = U
+	//update = U : add x to each element from l to r.
 	void U(int l, int r, int x) {
 		return update(0, n - 1, 1, l, r, x);
 	}
-
+	//query (l,r) = Q : find sum from L to R.
 	int Q(int l, int r) {
 		return query(0, n - 1, 1, l, r);
 	}
@@ -87,6 +87,8 @@ struct LazySegTree {
 	}
 
 	void propagate(int start, int end, int index) {
+		// in actual seg Tree we have already updated at index before calling propagate(), propagate function's job is to do changes in LazySeg tree only.
+		// the changes in lazySegTree required are 1.make lazy[index]=0 and 2.propagate change downwards.
 		if (start == end) {
 			//propagation not possible
 			Lazy[index] = 0;					//might change
