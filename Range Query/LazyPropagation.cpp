@@ -111,6 +111,7 @@ struct LazySegTree {
 			Lazy[index] += val;					//may change
 			propagate(start, end, index);
 			return;
+			//reason why we are leaving it to most updated form is because when we'll return upward for merging , we could do that merging correctly by using correct values.
 		}
 		if (start > r || end < l)
 			return;
