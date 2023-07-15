@@ -94,20 +94,20 @@ struct LazySegTree {
 			Lazy[index] = 0;					//might change
 			return;
 		}
-		Lazy[index * 2] += Lazy[index];	//may change (here adding , might be assign)
+		Lazy[index * 2] += Lazy[index];		//may change (here adding , might be assign)
 		Lazy[index * 2 + 1] += Lazy[index];	//may change (here adding , might be assign)
 		Lazy[index] = 0;					//might change
 	}
 
 	void update(int start, int end, int index, int l, int r, int val) {
-		if (Lazy[index] != 0) {								//might change
-			SegTree[index] += Lazy[index] * (end - start + 1);	//may change depending upon merge function
+		if (Lazy[index] != 0) {							//might change
+			SegTree[index] += Lazy[index] * (end - start + 1);		//may change depending upon merge function
 			propagate(start, end, index);
 		}
 
 		//current node is in most updated form
 		if (start >= l && end <= r) {
-			SegTree[index] += val * (end - start + 1); //may change
+			SegTree[index] += val * (end - start + 1); 		//may change
 			Lazy[index] += val;					//may change
 			propagate(start, end, index);
 			return;
@@ -124,8 +124,8 @@ struct LazySegTree {
 	}
 
 	int query(int start, int end, int index, int l, int r) {
-		if (Lazy[index] != 0) {								//may change
-			SegTree[index] += Lazy[index] * (end - start + 1);	//may change
+		if (Lazy[index] != 0) {							//may change
+			SegTree[index] += Lazy[index] * (end - start + 1);		//may change
 			propagate(start, end, index);
 		}
 
@@ -133,7 +133,7 @@ struct LazySegTree {
 			return SegTree[index];
 		}
 		if (end < l || r < start)
-			return 0;  		//may change
+			return 0;  			//may change
 
 		int mid = (start + end) / 2;
 		int leftAns = query(start, mid, index * 2, l, r);
