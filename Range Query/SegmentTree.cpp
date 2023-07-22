@@ -84,7 +84,7 @@ struct Update1 {
 	}
 };
 
-int main()
+signed main()
 {
   int n=4;
   vector<int> arr={1,2,1,7};
