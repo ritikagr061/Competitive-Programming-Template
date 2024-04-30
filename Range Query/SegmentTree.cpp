@@ -63,12 +63,15 @@ struct SegTree {
 
 struct Node1 {
 	ll val; // may change
+	//Node1() used when returning value disjoint overlap
 	Node1() { // Identity element
 		val = 0;	// may change
 	}
+	//Node1(ll p1) used in build for leaf elements of SegTree.
 	Node1(ll p1) {  // Actual Node
 		val = p1; // may change
 	}
+	//merge used used at build() for non-leaf elements , update() and query().
 	void merge(Node1 &l, Node1 &r) { // Merge two child nodes
 		val = l.val ^ r.val;  // may change
 	}
@@ -76,9 +79,11 @@ struct Node1 {
 
 struct Update1 {
 	ll val; // may change
+	//used only to create Update object in function U() later on this update object will be used to do actual update thru apply function.
 	Update1(ll p1) { // Actual Update
 		val = p1; // may change
 	}
+	//used only at leaf elements for update() func.
 	void apply(Node1 &a) { // apply update to given node
 		a.val = val; // may change
 	}
