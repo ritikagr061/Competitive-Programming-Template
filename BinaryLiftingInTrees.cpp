@@ -45,10 +45,13 @@ vector<vector<int>> BinaryLifting(int root, int n, vector<int> adj[])
 int kthParent(int x, int k, vector<vector<int>> &parent)
 {
 	// x=node of whose kth parent you want to find , k=yni , parent array = array returned by binary lifting function
-	for (int i = 0; i <= log2(k); i++)
+	for (int i = 0; i <= log2(k+1); i++)
 	{
-		if ((1 << i)&k)
+		if ((1 << i)&k){
 			x = parent[x][i];
+			if(x==-1)
+				break;
+		}
 	}
 	return x;
 
