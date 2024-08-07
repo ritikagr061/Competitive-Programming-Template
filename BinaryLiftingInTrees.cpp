@@ -2,6 +2,7 @@
 using namespace std;
 
 
+
 void findFirstParent(int i, vector<bool> &vis, vector<int> adj[], vector<vector<int>> &parent)
 {
 	vis[i] = true;
@@ -23,11 +24,11 @@ vector<vector<int>> BinaryLifting(int root, int n, vector<int> adj[])
 	// create parent
 	//return parent array where parent[x][i]=2^ith parent of x
 
-	vector<vector<int>> parent(n + 1, vector<int>(log2(n) + 1, -1));
+	vector<vector<int>> parent(n + 1, vector<int>(log2(n) + 4, -1));
 	vector<bool> vis(n + 1, false);
 	findFirstParent(root, vis, adj, parent);
 
-	for (int i = 1; i <= log2(n); i++)
+	for (int i = 1; i <= log2(n)+2; i++)
 	{
 		for (int x = 1; x <= n; x++)
 		{
@@ -85,8 +86,9 @@ vector<int> levelOfNode(int root, int n, vector<int> adj[])
 
 int findLCA(int a, int b, int n, vector<vector<int>> &parent, vector<int> &level)
 {
+	//T.C = O(n)
 	//a = first node , b=second node , n=total nodes
-	//level vector required , and also parent vector returned from binary lifting
+	//level vector required, and also parent vector returned from binary lifting
 	if (level[a] > level[b])
 		swap(a, b);
 
@@ -96,7 +98,7 @@ int findLCA(int a, int b, int n, vector<vector<int>> &parent, vector<int> &level
 	if (a == b)
 		return a;
 
-	for (int i = log(n); i >= 0; i--)
+	for (int i = log2(n)+1; i >= 0; i--)
 	{
 		int par1 = parent[a][i];
 		int par2 = parent[b][i];
@@ -110,6 +112,7 @@ int findLCA(int a, int b, int n, vector<vector<int>> &parent, vector<int> &level
 
 	return parent[a][0];
 }
+
 
 
 signed main() {
