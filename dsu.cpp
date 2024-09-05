@@ -35,10 +35,10 @@ template<typename T, typename V>void debug(const map<T, V>&v) {for (auto z : v)c
 
 
 struct DSU {
-    vector<int> par, rnk, size;
-    multiset<int> ms;
+    vector<int> par, rnk, size; //par stores the ultimate parent of a cc, size does not always give correct size, will give correct size only when finding size thru ultimate parent of the cc. 
+    multiset<int> ms; //stores the sizes of different components
 
-    int c;
+    int c; //stores no. of components
     DSU(int n) : par(n + 1), rnk(n + 1, 0), size(n + 1, 1), c(n) {
         for (int i = 1; i <= n; ++i)
             par[i] = i, ms.insert(1);
@@ -90,10 +90,23 @@ signed main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
-    int n, d;
-    cin >> n >> d;
-
-    DSU dsu(n);
-
-    return 0;
+    int n,m;
+	cin>>n>>m;
+	DSU dsu(n);
+ 
+	while(m--){
+		string s;
+		cin>>s;
+		int u,v;
+		cin>>u>>v;
+ 
+		if(s=="union"){
+			dsu.merge(u,v);
+		}
+		else{
+			cout<<(dsu.same(u,v)?"YES":"NO")<<endl;
+		}
+	}
+ 
+	return 0;
 }
